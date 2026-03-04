@@ -7,8 +7,14 @@ import { duplicateQuestion, makeBlankQuestion } from "./objects";
  * that are `published`.
  */
 export function getPublishedQuestions(questions: Question[]): Question[] {
-    return questions.filter(
+    const publishedOnly: Question[] = questions.filter(
         (question: Question): boolean => question.published,
+    );
+    return publishedOnly.map(
+        (question: Question): Question => ({
+            ...question,
+            options: [...question.options],
+        }),
     );
 }
 
@@ -18,11 +24,17 @@ export function getPublishedQuestions(questions: Question[]): Question[] {
  * `expected`, and an empty array for its `options`.
  */
 export function getNonEmptyQuestions(questions: Question[]): Question[] {
-    return questions.filter(
+    const nonEmpties: Question[] = questions.filter(
         (question: Question): boolean =>
             question.body !== "" ||
             question.expected !== "" ||
             question.options.length > 0,
+    );
+    return nonEmpties.map(
+        (question: Question): Question => ({
+            ...question,
+            options: [...question.options],
+        }),
     );
 }
 
@@ -48,8 +60,15 @@ export function findQuestion(
  * with the given `id`.
  */
 export function removeQuestion(questions: Question[], id: number): Question[] {
-    return questions.filter(
+    const removed: Question[] = questions.filter(
         (question: Question): boolean => question.id !== id,
+    );
+
+    return removed.map(
+        (question: Question): Question => ({
+            ...question,
+            options: [...question.options],
+        }),
     );
 }
 
@@ -143,7 +162,11 @@ export function makeAnswers(questions: Question[]): Answer[] {
  */
 export function publishAll(questions: Question[]): Question[] {
     return questions.map(
-        (question: Question): Question => ({ ...question, published: true }),
+        (question: Question): Question => ({
+            ...question,
+            published: true,
+            options: [...question.options],
+        }),
     );
 }
 
@@ -172,7 +195,18 @@ export function addNewQuestion(
     name: string,
     type: QuestionType,
 ): Question[] {
-    return [...questions, makeBlankQuestion(id, name, type)];
+    const newQuestions: Question[] = questions.map(
+        (question: Question): Question => ({
+            ...question,
+            options: [...question.options],
+        }),
+    );
+    newQuestions.splice(
+        newQuestions.length,
+        0,
+        makeBlankQuestion(id, name, type),
+    );
+    return newQuestions;
 }
 
 /***
@@ -188,8 +222,8 @@ export function renameQuestionById(
     return questions.map(
         (question: Question): Question =>
             question.id === targetId ?
-                { ...question, name: newName }
-            :   { ...question },
+                { ...question, name: newName, options: [...question.options] }
+            :   { ...question, options: [...question.options] },
     );
 }
 
@@ -210,14 +244,18 @@ export function changeQuestionTypeById(
             (question: Question): Question =>
                 question.id === targetId ?
                     { ...question, type: newQuestionType, options: [] }
-                :   { ...question },
+                :   { ...question, options: [...question.options] },
         );
     }
     return questions.map(
         (question: Question): Question =>
             question.id === targetId ?
-                { ...question, type: newQuestionType }
-            :   { ...question },
+                {
+                    ...question,
+                    type: newQuestionType,
+                    options: [...question.options],
+                }
+            :   { ...question, options: [...question.options] },
     );
 }
 
@@ -242,7 +280,7 @@ export function editOption(
             (question: Question): Question =>
                 question.id === targetId ?
                     { ...question, options: [...question.options, newOption] }
-                :   { ...question },
+                :   { ...question, options: [...question.options] },
         );
     }
     return questions.map(
@@ -256,7 +294,7 @@ export function editOption(
                         :   option,
                     ),
                 }
-            :   { ...question },
+            :   { ...question, options: [...question.options] },
     );
 }
 /***
@@ -276,7 +314,7 @@ export function duplicateQuestionInArray(
     const newQuestions: Question[] = questions.map(
         (question: Question): Question => ({
             ...question,
-            options: question.options,
+            options: [...question.options],
         }),
     );
     newQuestions.splice(
