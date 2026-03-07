@@ -16,7 +16,7 @@ function App(): React.JSX.Element {
         <div className="App">
             CISC275
             <hr></hr>
-            {/* <DoubleHalf></DoubleHalf> */}
+            <DoubleHalf></DoubleHalf>
             <hr></hr>
             <ChooseTeam></ChooseTeam>
             <hr></hr>
