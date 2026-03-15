@@ -8,13 +8,9 @@ export function CheckAnswer({
 }): React.JSX.Element {
     const [userAnswer, setUserAnswer] = useState<string>("");
 
-    // function updateUserAnswer(event: React.ChangeEvent<HTMLInputElement>) {
-    //     setUserAnswer(event.target.name)
-    // }
-
     return (
         <div>
-            <Form.Group controlId="UserAnswer">
+            <Form.Group controlId="formUserAnswer">
                 <Form.Label>Answer:</Form.Label>
                 <Form.Control
                     type="text"

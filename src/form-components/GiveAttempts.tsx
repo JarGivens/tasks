@@ -9,7 +9,7 @@ export function GiveAttempts(): React.JSX.Element {
         <div>
             <h3>Give Attempts</h3>
             <h3>Attempts: {attempts}</h3>
-            <Form.Group>
+            <Form.Group controlId="formAddAttempts">
                 <Form.Label>Attempts to add:</Form.Label>
                 <Form.Control
                     type="number"
